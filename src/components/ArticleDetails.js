@@ -1,22 +1,18 @@
 import React from 'react';
-import { View, Linking, TouchableNativeFeedback } from 'react-native';
+import { View } from 'react-native';
 import { Text, Button, Card, Divider } from 'react-native-elements';
 import moment from 'moment';
 
-export default class Article extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
-  onDetail = (Article) => {
-    console.log(this.props)
-    this.props.navigation.navigate("ArticleDetails", {
-      Article
-    });
-  };
-
-  render() {
-    const {
+export default class ArticleDetails extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            article: this.props.navigation.state.params.Article
+        }
+    }
+    render () {
+        const {
       title,
       description,
       publishedAt,
@@ -24,19 +20,14 @@ export default class Article extends React.Component {
       urlToImage,
       url,
       content
-    } = this.props.article;
+    } = this.state.article;
     const { noteStyle, featuredTitleStyle } = styles;
     const time = moment(publishedAt || moment.now()).fromNow();
     const defaultImg =
       'https://wallpaper.wiki/wp-content/uploads/2017/04/wallpaper.wiki-Images-HD-Diamond-Pattern-PIC-WPB009691.jpg';
+        return (
 
-    return (
-      <TouchableNativeFeedback
-        useForeground
-        //onPress={() => Linking.openURL(url)}
-        onPress={() => this.onDetail(this.props.article)}
-      >
-        <Card
+            <Card
           featuredTitle={title}
           featuredTitleStyle={featuredTitleStyle}
           image={{
@@ -44,7 +35,7 @@ export default class Article extends React.Component {
           }}
         >
           <Text style={{ marginBottom: 10 }}>
-            {description || 'Read More..'}
+            {content || 'Read More..'}
           </Text>
           <Divider style={{ backgroundColor: '#dfe6e9' }} />
           <View
@@ -54,9 +45,9 @@ export default class Article extends React.Component {
             <Text style={noteStyle}>{time}</Text>
           </View>
         </Card>
-      </TouchableNativeFeedback>
-    );
-  }
+
+        );
+    }
 }
 
 const styles = {
